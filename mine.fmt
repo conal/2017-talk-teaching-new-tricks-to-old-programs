@@ -1,0 +1,159 @@
+%% Misc lhs2TeX directives
+
+%format family = "\mathbf{family}"
+
+%format <$> = "\mathbin{<\!\!\!\$\!\!\!>}"
+
+%% optional <$> spelling, to avoid $ confusing emacs latex-mode.
+%format <#> = <$>
+
+% Got from Andres L:
+\newcommand{\calculationcomments}{%
+  \let\onelinecomment=\onelinecommentchars
+  \def\commentbegin{\quad\{ }%
+  \def\commentend{\}}%
+}
+\calculationcomments
+
+%format NOTHING = "{}"
+%% hack: add missing space, e.g., before "{" in data type decl
+%format SPC = "\, {}"
+%format SPACE = "\ \ {}"
+%format NOP = "{}"
+%% %format NOP = "{} \!\!"
+%format PAUSE = "\pause"
+
+%% %format <> = "\mathbin{\Diamond}"
+
+%format  N0 =  0
+%format  N1 =  1
+%format  N2 =  2
+%format  N3 =  3
+%format  N4 =  4
+%format  N5 =  5
+%format  N6 =  6
+%format  N7 =  7
+%format  N8 =  8
+%format  N9 =  9
+%format  N0 =  0
+%format N11 = 11
+%format N12 = 12
+%format N13 = 13
+%format N14 = 14
+%format N15 = 15
+%format N16 = 16
+
+%% %format VecTy = "\Varid{Vec}"
+%% %format RBinTy = "\Varid{RBin}"
+%% %format LBinTy = "\Varid{\hspace{0.25ex}LBin}"
+
+%% %format Vec (n) = VecTy"_{"n"}"
+%% %format RBin (n) = RBinTy"_{"n"}"
+%% %format LBin (n) = LBinTy"_{"n"}"
+
+%% Why not just ... = Vec "_{"n"}", etc?
+
+%% %format Vec (n) = Vec"_{"n"}"
+%% %format LVec (n) = LVec"_{"n"}"
+%% %format RVec (n) = RVec"_{"n"}"
+%% %format RBin (n) = RBin"_{"n"}"
+%% %format LBin (n) = LBin"_{"n"}"
+
+%% %% Otherwise "type family Vec n" shows as "type family Vec. n".
+%% %format  Vec_n =  Vec"_n"
+%% %format LVec_n = LVec"_n"
+%% %format RVec_n = RVec"_n"
+%format  Vec_n =  Vec "\;"n
+%format LVec_n = LVec "\;"n
+%format RVec_n = RVec "\;"n
+
+%format V1
+%format U1
+%format K1
+%format Par1
+
+%format L1
+%format R1
+%format Comp1
+
+%format unK1
+%format unPar1
+%format unComp1
+
+%format And1
+%format unAnd1
+%format firstAnd1
+%format unzipAnd1
+
+%format :*: = " \pmb{\times} "
+%format :+: = " \pmb{+} "
+%format :.: = " \pmb{\circ} "
+
+%format firstAnd1
+
+%format :# = "\mathbin{:\!\!\#}"
+
+%format Pair = "\Pair"
+
+%format @ = "\,\mathord{@}"
+
+%format Generic1
+%format Rep1
+%format to1
+%format from1
+
+
+%%%%%%%%%%%%
+
+%format Unit = " \mathbf{1} "
+%format :* = " \times "
+%format :+ = " + "
+
+%% %format `mappend` = " \mathbin{\oplus} "
+%% %format mempty = " \emptyset "
+
+%format <> = " \mathbin{\Diamond} "
+%format `mappend` = " \mathbin{\Diamond} "
+%format mempty = " \varepsilon "
+
+% \renewcommand{\onelinecomment}{\it}
+
+% %format :> = "\mathbin{:\!>}"
+%format :> = "\mathbin{\rhd}"
+
+%% %format adjustl = bump
+%format =~ = " \simeq "
+
+%format <.> = "\cdot"
+
+%format `xor` = " \oplus "
+
+%format *** = "\mathbin{\times}"
+%% %format *** = "\symThree{*}"
+
+%format (LBin (n)) = "\overleftarrow{2^{"n"}}"
+%format (RBin (n)) = "\overrightarrow{2^{"n"}}"
+
+%% %format RBin = RPow "\;" Pair
+%% %format LBin = LPow "\;" Pair
+
+%format (LVec' (n)) = n
+%format (RVec' (n)) = n
+
+%format (Bush' (n)) = "2^{2^{"n"}}"
+
+%format (Size(n)) = "\Size{"n"}"
+%format * = "\times"
+%format ==> = "\therefore"
+
+%% %format STAR = *
+%format STAR = "\mathbin{*}"
+
+%% %format a ^ (n) = a"^{"n"}"
+
+%format pow a (n) = a"^{"n"}"
+
+%format log2 = log"_2"
+
+%format Work = W
+%format Depth = D
