@@ -1,4 +1,4 @@
-TARG = new-tricks-old-programs
+TARG = teaching-new-tricks-to-old-programs
 
 .PRECIOUS: %.tex %.pdf %.web
 
