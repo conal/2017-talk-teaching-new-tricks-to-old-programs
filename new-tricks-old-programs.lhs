@@ -15,7 +15,7 @@
 %include mine.fmt
 
 \title{Teaching new tricks to old programs}
-\date{\emph{[\today]}}
+\date{May 2017}
 
 \setlength{\blanklineskip}{1.5ex}
 \setlength\mathindent{4ex}
@@ -24,6 +24,6 @@
 
 \frame{\titlepage}
 
-\framet{Prefix sum (left scan)}{}
+% \framet{Prefix sum (left scan)}{}
 
 \end{document}
