@@ -555,19 +555,79 @@ instance Num s => NumCat D s where
 
 \framet{Composing interpretations (|Graph| and |D|)}{
 
-\begin{textblock}{158}[1,0](167,40)
+\begin{textblock}{165}[1,0](173,41)
 \begin{tcolorbox}
-\wpicture{1.9in}{cosSinProd}
+\wpicture{2in}{cosSinProd}
 \end{tcolorbox}
 \end{textblock}
 
-\vspace{8ex}
+\vspace{10ex}
 \begin{center}\wpicture{4.5in}{cosSinProd-ad}\end{center}
 }
 
-\framet{Incremental computation}{}
+%% \framet{Incremental computation}{}
 
-\framet{Interval analysis}{}
+\framet{Interval analysis}{
+\mathindent1ex
+\small
+
+%format Iv = Interval
+%format IF = IFun
+
+%format al = a"_"lo
+%format ah = a"_"hi
+%format bl = b"_"lo
+%format bh = b"_"hi
+%format min4
+%format max4
+
+\begin{code}
+data IF a b = IF (Iv a -> Iv b)
+
+type family Iv a
+type instance Iv Double      = Double :* Double
+type instance Iv (a  :*  b)  = Iv a  :*  Iv b
+type instance Iv (a  ->  b)  = Iv a  ->  Iv b
+\end{code}
+
+\begin{minipage}[b]{0.47\textwidth}
+\begin{code}
+instance Category IF where
+  id = IF id
+  IF g . IF f = IF (g . f)
+NOP
+\end{code}
+\end{minipage}
+\begin{minipage}[b]{0ex}{\ \ \rule[1.9ex]{0.5pt}{11ex}}\end{minipage}
+\begin{minipage}[b]{0.3\textwidth}\setlength\mathindent{2ex}
+\begin{code}
+instance Cartesian IF where
+  exl = IF exl
+  exr = IF exr
+  IF f &&& IF g = IF (f &&& g)
+\end{code}
+\end{minipage}
+\vspace{-7ex}
+\begin{code}
+...
+NOP
+instance (Iv a ~ (a :* a), Num a, Ord a) => NumCat IF a where
+  addC = IF (\ ((al,ah),(bl,bh)) -> (al+bl,ah+bh))
+  mulC = IF (\ ((al,ah),(bl,bh)) ->
+    minmax [al*bl,al*bh,ah*bl,ah*bh]
+  ...
+\end{code}
+}
+
+\framet{Interval analysis --- example}{
+\vspace{3ex}
+
+> horner [1,3,5]
+
+\vspace{-12ex}
+\begin{center}\wpicture{4.6in}{horner-iv}\end{center}
+}
+
 
 \framet{Constraint solving}{}
 
