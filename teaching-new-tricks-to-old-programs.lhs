@@ -686,45 +686,37 @@ Z3 solution: |(-8,2)|.
 \end{itemize}
 }
 
+\definecolor{procolor}{rgb}{0,0.4,0}
+\definecolor{concolor}{rgb}{0.7,0,0}
+
+\nc\pro[1]{\item \textcolor{procolor}{#1}}
+\nc\con[1]{\item \textcolor{concolor}{#1}}
+
 \framet{Domain-specific embedded languages (DSELs)}{
 
-\begin{itemize}
-\item
-  \emph{Shallow} (just a library):
+\begin{itemize}\itemsep2ex
+\item \emph{Shallow} (just a library):
   \begin{itemize}
-  \item
-    Great fit with host language.
-  \item
-    Easy to implement and use.
-  \item
-    Hard to optimize.
-  \item
-    Good choice for expressing ideas.
+  \pro{Great fit with host language.}
+  \pro{Easy to implement and use.}
+  \con{Hard to optimize.}
+  \item Good choice for \emph{expressing ideas}.
   \end{itemize}
-\item
-  \emph{Deep} (syntactic representation):
+\item \emph{Deep} (syntactic representation):
   \begin{itemize}
-  \item
-    More room for analysis and optimization.
-  \item
-    Harder to implement; redundant with host compiler.
-  \item
-    Less semantic guidance.
-  \item
-    Syntactically awkward in places.
-  \item
-    Good choice for efficient implementation.
+  \pro{More room for analysis and optimization.}
+  \con{Harder to implement; redundant with host compiler.}
+  \con{Less semantic guidance.}
+  \con{Syntactically awkward in places.}
+  \item Good choice for \emph{efficient implementation}.
   \end{itemize}
-\item {Compiling to categories}:
+\item \emph{Compiling to categories} \out{(library plus compiler plugin):}:
+  %% \\Best of both.
   \begin{itemize}
-  \item
-    Just a library/vocabulary.
-  \item
-    Semantic guidance.
-  \item
-    Easy to implement.
-  \item
-    Analysis, optimization, non-standard target architectures.
+    \pro{Great fit with host language.}
+    \pro{Semantic guidance.}
+    \pro{Easy to implement.}
+    \pro{Analysis, optimization, non-standard target architectures.}
   \end{itemize}
 \end{itemize}
 }
