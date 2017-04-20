@@ -430,14 +430,14 @@ apply == uncurry id
 }
 
 \framet{Computation graphs --- example}{
-
-\vspace{-4ex}
+\vspace{-1.5ex}
 
 > cosSinProd (x,y) = (cos z, sin z) where z = x * y
 
 > cosSinProd = (cosC &&& sinC) . mulC
 
-\begin{center}\wpicture{4.5in}{cosSinProd}\end{center}
+\vspace{1ex}
+\begin{center}\wpicture{4.6in}{cosSinProd}\end{center}
 }
 
 \framet{Computation graphs --- implementation sketch}{
@@ -629,10 +629,104 @@ instance (Iv a ~ (a :* a), Num a, Ord a) => NumCat IF a where
 }
 
 
-\framet{Constraint solving}{}
+\framet{Constraint solving (with John Wiegley)}{ \small
 
-\framet{}{}
+%format Z3Cat = SMT
+%format runZ3Cat = runSMT
+%format ArrE = FunE
+%format liftE1
+%format liftE2
 
-\framet{Domain-specific languages}{ }
+\begin{code}
+newtype Z3Cat a b = Z3Cat (Kleisli Z3 (E a) (E b))
+
+data E :: * -> * NOP where
+    PrimE  :: AST -> E a
+    PairE  :: E a -> E b -> E (a :* b)
+
+instance Category Z3Cat where
+    id  = Z3Cat id
+    Z3Cat g . Z3Cat f = Z3Cat (g . f)
+
+instance ProductCat Z3Cat where
+    exl   = Z3Cat (arr (exl . unpairE))
+    exr   = Z3Cat (arr (exr . unpairE))
+    Z3Cat f &&& Z3Cat g = Z3Cat (arr PairE . (f &&& g))
+
+instance Num a => NumCat Z3Cat a where
+    negateC  = liftE1 mkUnaryMinus
+    addC     = liftE2 mkAdd
+    subC     = liftE2 mkSub
+    mulC     = liftE2 mkMul
+\end{code}
+}
+
+\framet{Constraint solving (with John Wiegley)}{
+\begin{code}
+pred :: (Num a, Ord a) => a :* a -> Bool
+pred (x,y) =
+    x < y &&
+    y < 100 &&
+    0 <= x - 3 + 7 * y &&
+    (x == y || y + 20 == x + 30)
+\end{code}
+
+\vspace{4ex}
+
+Z3 solution: |(-8,2)|.
+
+}
+
+\framet{Other examples}{
+\begin{itemize}\itemsep2ex
+\item Linear maps
+\item Incremental evaluation
+\item Polynomials
+\item Nondeterministic and probabilistic programming
+\end{itemize}
+}
+
+\framet{Domain-specific embedded languages (DSELs)}{
+
+\begin{itemize}
+\item
+  \emph{Shallow} (just a library):
+  \begin{itemize}
+  \item
+    Great fit with host language.
+  \item
+    Easy to implement and use.
+  \item
+    Hard to optimize.
+  \item
+    Good choice for expressing ideas.
+  \end{itemize}
+\item
+  \emph{Deep} (syntactic representation):
+  \begin{itemize}
+  \item
+    More room for analysis and optimization.
+  \item
+    Harder to implement; redundant with host compiler.
+  \item
+    Less semantic guidance.
+  \item
+    Syntactically awkward in places.
+  \item
+    Good choice for efficient implementation.
+  \end{itemize}
+\item {Compiling to categories}:
+  \begin{itemize}
+  \item
+    Just a library/vocabulary.
+  \item
+    Semantic guidance.
+  \item
+    Easy to implement.
+  \item
+    Analysis, optimization, non-standard target architectures.
+  \end{itemize}
+\end{itemize}
+}
 
 \end{document}
