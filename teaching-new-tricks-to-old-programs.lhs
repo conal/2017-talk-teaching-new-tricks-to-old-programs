@@ -455,11 +455,21 @@ instance BoolCat Graph where
 
 }
 
-\framet{Computation graphs --- example}{
+\framet{Computation graphs --- fold}{
 
-> sum :: RTree N4 Int -> Int
+> sum :: Tree N4 Int -> Int
 
 \begin{center}\wpicture{4.5in}{sum-t4}\end{center}
+
+}
+
+\framet{Computation graphs --- scan}{
+
+> lsums :: Tree N4 Int -> Tree N4 Int :* Int
+
+\vspace{-6ex}
+
+\begin{center}\wpicture{4.25in}{lsums-rb4}\end{center}
 
 }
 
@@ -467,20 +477,11 @@ instance BoolCat Graph where
 
 Convert graphs to Verilog, e.g.,
 
-%if False
-\begin{textblock}{150}[1,0](330,35)
+\begin{textblock}{180}[1,0](350,95)
 \begin{tcolorbox}
-\wpicture{1.75in}{magSqr}
+\wpicture{2.2in}{magSqr}
 \end{tcolorbox}
 \end{textblock}
-\vspace{6ex}
-%else
-\begin{textblock}{170}[1,0](350,95)
-\begin{tcolorbox}
-\wpicture{2in}{magSqr}
-\end{tcolorbox}
-\end{textblock}
-%endif
 
 \begin{verbatim}
    module magSqr (In_0, In_1, Out);
@@ -496,8 +497,6 @@ Convert graphs to Verilog, e.g.,
      assign Times_I4 = In_1 * In_1;
    endmodule
 \end{verbatim}
-
-
 }
 
 \framet{Linear maps}{(maybe omit)}
