@@ -147,7 +147,7 @@ Same as algebraic abstraction:
 \begin{itemize}\itemsep3ex
 \item Convenient notation.
 \item Generalized, principled interpretation.
-\item Modular reasoning.
+\item Modular programming and reasoning.
 \end{itemize}
 
 
@@ -189,9 +189,9 @@ Same as algebraic abstraction:
 
 \framet{How to overload lambda?}{
 
-\begin{itemize}\itemsep1ex\parskip1.5ex
+\begin{itemize}\itemsep3ex\parskip1.5ex
 \pitem 
-  Eliminate it, and overload as usual.
+  Idea: eliminate it, and overload as usual.
 \pitem
   How?
 \out{
@@ -269,6 +269,10 @@ Systematic \emph{un-inlining:}
                    :=>  curry (\ r -> u[fst r / p, snd r / q])
 \end{code}
 
+\
+
+Automate via a compiler plugin.
+
 }
 
 \framet{Examples}{
@@ -286,10 +290,10 @@ cosSinProd (x,y) = (cos z, sin z) where z = x * y
 
 After |\ |-elimination:
 
-%format cosC = cos
-%format sinC = sin
-%format addC = add
-%format mulC = mul
+%% format cosC = cos
+%% format sinC = sin
+%% format addC = add
+%% format mulC = mul
 
 \begin{code}
 sqr = mulC . (id &&& id)
@@ -410,7 +414,8 @@ apply == uncurry id
 \item
   and replaced them with an algebraic vocabulary.
 \pitem
-  What happens if we replace |->| with other instances?
+  What happens if we replace |(->)| with other instances?\\
+  (Via compiler plugin.)
 \end{itemize}
 }
 
@@ -420,11 +425,13 @@ apply == uncurry id
 
 > magSqr = addC . (mulC . (exl &&& exl) &&& mulC . (exr &&& exr))
 
+\pause
 \begin{center}\wpicture{4.5in}{magSqr}\end{center}
-
 }
 
 \framet{Computation graphs --- example}{
+
+\vspace{-4ex}
 
 > cosSinProd (x,y) = (cos z, sin z) where z = x * y
 
@@ -475,7 +482,7 @@ instance BoolCat Graph where
 
 \framet{Haskell to hardware}{
 
-Convert graphs to Verilog, e.g.,
+Convert graphs to Verilog:
 
 \begin{textblock}{180}[1,0](350,95)
 \begin{tcolorbox}
@@ -499,10 +506,69 @@ Convert graphs to Verilog, e.g.,
 \end{verbatim}
 }
 
+\nc\lm[1]{\mathop{\multimap}_{#1}}
+%format LM a b = a "\multimap" b
+
 \framet{Linear maps}{(maybe omit)}
-\framet{Automatic differentiation}{}
+
+%% \nc\ad[1]{\mathop{\leadsto}_{#1}}
+%% %format DF s a b = a "\ad{"s"}" b
+%% %format DF' s = "\ad{"s"}"
+
+\framet{Automatic differentiation}{
+\mathindent-1ex
+\begin{code}
+data D a b = D (a -> b :* (LM a b)) -- Derivatives are linear maps.
+
+linearD f = D (\ a -> (f a, linear f))
+
+instance Num s => Category D where
+  id = linearD id
+  D g . D f = D (\ a -> let { (b,f') = f a ; (c,g') = g b } in (c, g' . f'))
+
+instance Num s => Cartesian D where
+  exl  = linearD exl
+  exr  = linearD exr
+  D f &&& D g = D (\ a -> let { (b,f') = f a ; (c,g') = g a } in ((b,c), f' &&& g'))
+
+instance Num s => NumCat D s where
+  negateC  = linearD negateC
+  addC     = linearD addC
+  mulC     = D (mulC &&& \ (a,b) -> linear (\ (da,db) -> da * b + db * a))
+
+\end{code}
+}
+
+\framet{Composing interpretations (|Graph| and |D|)}{
+
+\begin{textblock}{160}[1,0](357,37)
+\begin{tcolorbox}
+\wpicture{2in}{magSqr}
+\end{tcolorbox}
+\end{textblock}
+
+\vspace{8ex}
+\begin{center}\wpicture{4.5in}{magSqr-ad}\end{center}
+
+%% \figoneW{0.51}{cosSinProd-ad}{|andDeriv cosSinProd|}{\incpic{cosSinProd-ad}}}
+}
+
+\framet{Composing interpretations (|Graph| and |D|)}{
+
+\begin{textblock}{158}[1,0](167,40)
+\begin{tcolorbox}
+\wpicture{1.9in}{cosSinProd}
+\end{tcolorbox}
+\end{textblock}
+
+\vspace{8ex}
+\begin{center}\wpicture{4.5in}{cosSinProd-ad}\end{center}
+}
+
 \framet{Incremental computation}{}
+
 \framet{Interval analysis}{}
+
 \framet{Constraint solving}{}
 
 \framet{}{}
