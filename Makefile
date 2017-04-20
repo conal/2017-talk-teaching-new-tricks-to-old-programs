@@ -6,15 +6,13 @@ all: $(TARG).pdf
 
 see: $(TARG).see
 
-dots = $(wildcard Figures/circuits/*.dot)
+dots = $(wildcard Figures/*.dot)
 pdfs = $(addsuffix .pdf, $(basename $(dots))) $(wildcard Figures/circuits/*-scaled.pdf)
 
 %.pdf: %.tex $(pdfs) Makefile
 	pdflatex $*.tex
 
-# --poly is default for lhs2TeX
-
-%.tex: %.lhs macros.tex mine.fmt Makefile
+%.tex: %.lhs macros.tex formatting.fmt Makefile
 	lhs2TeX -o $*.tex $*.lhs
 
 showpdf = open -a Skim.app

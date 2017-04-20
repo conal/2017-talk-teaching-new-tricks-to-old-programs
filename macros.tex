@@ -6,6 +6,13 @@
 \usepackage{epsfig}
 \usepackage{latexsym}
 
+%% %% lhs2tex messes with verbatim, and I lose spacing.
+%% \usepackage{fancyvrb}
+
+%% \usepackage{enumitem}
+%% \setlist[1]{labelindent=\parindent,itemsep=0.5in,label=$\bullet$}
+%% \setlist[2]{labelindent=\parindent,itemsep=0.5in,label=$\bullet$}
+
 \nc\out[1]{}
 
 \nc\mynoteOut[2]{\mynote{#1}\out{#2}}
@@ -29,7 +36,7 @@
 \nc{\Varap}[1]{\Opid{#1}\,}
 \nc{\Varapp}[2]{\Varap{#1}{(#2)}}
 
-\nc\wpicture[2]{\includegraphics[width=#1]{#2}}
+\nc\wpicture[2]{\includegraphics[width=#1]{Figures/#2}}
 
 \nc\wfig[2]{
 \begin{center}
@@ -154,3 +161,10 @@
 \setlength{\itemsep}{2ex}
 \setlength{\parskip}{1ex}
 % \setstretch{1.2} % ??
+
+\nc\pitem{\pause\item}
+
+%% Double quote symbol
+\nc\dq{\text{\tt\char34}}
+%% Quoted haskell string with formatted content
+\nc\hquoted[1]{\dq\!#1\!\dq}
