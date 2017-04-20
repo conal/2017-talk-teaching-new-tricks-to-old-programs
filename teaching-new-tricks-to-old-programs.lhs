@@ -77,10 +77,11 @@ It depends on |+|, |*|, and |2|.
 
 {\large It depends on |+|, |*|, and |2|}\pause:
 
-\begin{itemize}\itemsep2ex
+\begin{itemize}\itemsep1.8ex
 \item |Int|, |Float|, |Double|
 \item |N|, |Z|, |Q|, |R|, |C|
-\item Vectors, polynomials
+\pitem Vectors
+\item Polynomials
 \item Functions
 \item Regular expressions
 \item Arbitrary rings, semirings, \dots.
@@ -109,6 +110,7 @@ It depends on |+|, |*|, and |2|.
   (More with less.)
 \end{itemize}
 
+\vspace{2ex}
 Example,
 
 > fold :: (Foldable f, Monoid m) => f m -> m
@@ -401,7 +403,7 @@ Laws:
 uncurry (curry f)                == f
 curry (uncurry g)                == g
 apply . (curry f . exl &&& exr)  == f
-apply == uncurry id
+apply                            == uncurry id
 
 \end{code}
 
@@ -414,7 +416,7 @@ apply == uncurry id
 \item
   and replaced them with an algebraic vocabulary.
 \pitem
-  What happens if we replace |(->)| with other instances?\\
+  What happens if we \emph{replace |(->)| with other instances?}\\
   (Via compiler plugin.)
 \end{itemize}
 }
@@ -509,7 +511,9 @@ Convert graphs to Verilog:
 \nc\lm[1]{\mathop{\multimap}_{#1}}
 %format LM a b = a "\multimap" b
 
+\out{
 \framet{Linear maps}{(maybe omit)}
+}
 
 %% \nc\ad[1]{\mathop{\leadsto}_{#1}}
 %% %format DF s a b = a "\ad{"s"}" b
@@ -543,6 +547,12 @@ instance Num s => NumCat D s where
 
 \begin{textblock}{160}[1,0](357,37)
 \begin{tcolorbox}
+\small \mathindent1.5in
+\vspace{-3ex}
+
+> magSqr
+
+\vspace{-7ex}
 \wpicture{2in}{magSqr}
 \end{tcolorbox}
 \end{textblock}
@@ -557,6 +567,13 @@ instance Num s => NumCat D s where
 
 \begin{textblock}{165}[1,0](173,41)
 \begin{tcolorbox}
+\small \mathindent-1ex
+\vspace{-3ex}
+
+> cosSinProd
+
+\vspace{-6ex}
+
 \wpicture{2in}{cosSinProd}
 \end{tcolorbox}
 \end{textblock}
