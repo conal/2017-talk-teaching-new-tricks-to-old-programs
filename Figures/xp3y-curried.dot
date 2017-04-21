@@ -1,0 +1,28 @@
+digraph xp3y_curried {
+  margin=0
+  compound=true
+  rankdir=LR
+  node [shape=Mrecord]
+  edge [fontsize=8,fontcolor=indigo]
+  bgcolor=transparent
+  nslimit=20
+  subgraph cluster0 { label=""; color=white ; c0 [label="{In|{<Out0>}}"] }
+  subgraph cluster7 { label=""; color=white ; c7 [label="{{<In0>}|Out}"] }
+  subgraph cluster_6 {
+    margin=8
+    fontsize=20
+    labeljust=r
+    color=DarkGreen
+    subgraph clouster3 { label=""; color=white ; c3 [label="{{<In0>|<In1>}|\×|{<Out0>}}"] }
+    subgraph clouster4 { label=""; color=white ; c4 [label="{{<In0>|<In1>}|+|{<Out0>}}"] }
+    subgraph clouster2 { label=""; color=white ; c2 [label="{3.0|{<Out0>}}"] }
+    subgraph clouster1 { label=""; color=white ; c1 [label="{In|{<Out0>}}"] }
+    subgraph clouster5 { label=""; color=white ; c5 [label="{{<In0>}|Out}"] }
+    c1:Out0 -> c3:In0
+    c2:Out0 -> c3:In1
+    c0:Out0 -> c4:In0
+    c3:Out0 -> c4:In1
+    c4:Out0 -> c5:In0
+  }
+  c5 -> c7:In0 [ltail=cluster_6,llabel="Double → Double"]
+}

@@ -32,7 +32,7 @@
 
 \begin{center}
 
-> x + 2 * y
+> x + 3 * y
 
 \end{center}
 \vspace{6ex}
@@ -48,7 +48,7 @@ It depends on |x| and |y|.
 
 \begin{center} \mathindent0ex
 
-> \ x y -> x + 2 * y
+> \ x y -> x + 3 * y
 
 \end{center}
 \vspace{6ex}
@@ -70,7 +70,7 @@ It depends on |+|, |*|, and |2|.
 
 \begin{center} \LARGE \mathindent0ex
 
-> \ x y -> x + 2 * y
+> \ x y -> x + 3 * y
 
 \end{center}
 %% \vspace{1ex}
@@ -123,12 +123,12 @@ Example,
 
 \begin{center} \LARGE \mathindent0ex
 
-> \ x y -> x + 2 * y
+> \ x y -> x + 3 * y
 
 \end{center}
 %% \vspace{1ex}
 
-\begin{itemize}\itemsep2ex
+\begin{itemize}\itemsep4ex
 \item
   The most basic ``operations'':  |\ |, variables, and application.
 \pitem
@@ -142,7 +142,7 @@ Example,
 
 \framet{Why overload lambda?}{ \large
 
-Same as algebraic abstraction:
+Same benefits as algebraic abstraction:
 
 \vspace{2ex}
 
@@ -159,7 +159,7 @@ Same as algebraic abstraction:
 
 \vspace{2ex}
 
-\begin{itemize}\itemsep1ex\parskip1.5ex
+\begin{itemize}\itemsep1ex\parskip2ex
 \item
  Convenient notation for functions.
 \pitem
@@ -255,10 +255,13 @@ apply  = \ (f,a) -> f a
 
 \framet{Eliminating lambda}{
 
-Systematic \emph{un-inlining:}
+Systematically \emph{un-inline:}
+
+\vspace{3ex}
 
 %format :=> = "\dashrightarrow"
 
+{\setstretch{1.25}
 \begin{code}
 (\ p -> k)         :=>  const k
 
@@ -267,11 +270,11 @@ Systematic \emph{un-inlining:}
 (\ p -> u v)       :=>  apply . ((\ p -> u) &&& (\ p -> v))
 
 (\ p -> \ q -> u)  :=>  curry (\ (p,q) -> u)
-
                    :=>  curry (\ r -> u[fst r / p, snd r / q])
 \end{code}
+}
 
-\
+\vspace{0ex}
 
 Automate via a compiler plugin.
 
@@ -410,7 +413,7 @@ apply                            == uncurry id
 }
 
 \framet{Changing interpretations}{
-\begin{itemize}\itemsep2ex
+\begin{itemize}\itemsep3ex
 \item
   We've eliminated lambdas and variables
 \item
@@ -440,6 +443,18 @@ apply                            == uncurry id
 
 \vspace{1ex}
 \begin{center}\wpicture{4.6in}{cosSinProd}\end{center}
+}
+
+\framet{Computation graphs --- example}{
+\vspace{1ex}
+
+> \ x y -> x + 3 * y
+
+> curry (addC . (exl &&& mulC . (const 3.0 &&& exr)))
+
+\pause
+\vspace{-2ex}
+\begin{center}\wpicture{4.6in}{xp3y-curried}\end{center}
 }
 
 \framet{Computation graphs --- implementation sketch}{
@@ -488,9 +503,18 @@ Convert graphs to Verilog:
 
 \begin{textblock}{180}[1,0](350,95)
 \begin{tcolorbox}
+
+\small \mathindent1.8in
+\vspace{-2.7ex}
+
+> magSqr
+
+\vspace{-7ex}
+
 \wpicture{2.2in}{magSqr}
 \end{tcolorbox}
 \end{textblock}
+\pause
 
 \begin{verbatim}
    module magSqr (In_0, In_1, Out);
@@ -556,6 +580,7 @@ instance Num s => NumCat D s where
 \wpicture{2in}{magSqr}
 \end{tcolorbox}
 \end{textblock}
+\pause
 
 \vspace{8ex}
 \begin{center}\wpicture{4.5in}{magSqr-ad}\end{center}
@@ -577,6 +602,7 @@ instance Num s => NumCat D s where
 \wpicture{2in}{cosSinProd}
 \end{tcolorbox}
 \end{textblock}
+\pause
 
 \vspace{10ex}
 \begin{center}\wpicture{4.5in}{cosSinProd-ad}\end{center}
@@ -637,14 +663,53 @@ instance (Iv a ~ (a :* a), Num a, Ord a) => NumCat IF a where
 }
 
 \framet{Interval analysis --- example}{
+
+\begin{textblock}{165}[1,0](360,220)
+\begin{tcolorbox}
+\wpicture{1.45in}{xp3y}
+\small \mathindent15ex
+\vspace{-5.5ex}
+
+> \ (x,y) -> x + 3 * y
+
+\vspace{-4.5ex}
+
+\end{tcolorbox}
+\end{textblock}
+\pause
+
+\vspace{-4ex}
+\begin{center}\wpicture{4.6in}{xp3y-iv}\end{center}
+}
+
+%if False
+\framet{Interval analysis --- example}{
+
+%if True
+
+\begin{textblock}{165}[1,0](173,41)
+\begin{tcolorbox}
+\small \mathindent-1ex
+\vspace{-3ex}
+
+> horner [1,3,5]
+
+\vspace{-6ex}
+
+\wpicture{2in}{horner}
+\end{tcolorbox}
+\end{textblock}
+
+%else
 \vspace{3ex}
 
 > horner [1,3,5]
 
 \vspace{-12ex}
+%endif
 \begin{center}\wpicture{4.6in}{horner-iv}\end{center}
 }
-
+%endif
 
 \framet{Constraint solving (with John Wiegley)}{ \small
 

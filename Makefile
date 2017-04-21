@@ -31,9 +31,10 @@ clean:
 
 web: web-token
 
-STASH=conal@conal.net:/home/conal/web/talks
+# STASH=conal@conal.net:/home/conal/web/talks
+STASH=conal@conal.net:/home/conal/web/stuff/lj17.pdf
 web: web-token
 
 web-token: $(TARG).pdf
-	scp $? $(STASH)/$(TARG).pdf
+	scp $? $(STASH)
 	touch $@
