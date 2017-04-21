@@ -54,7 +54,7 @@ It depends on |x| and |y|.
 \vspace{6ex}
 
 \pause
-It depends on |+|, |*|, and |2|.
+It depends on |+|, |*|, and |3|.
 
 }
 
@@ -75,7 +75,7 @@ It depends on |+|, |*|, and |2|.
 \end{center}
 %% \vspace{1ex}
 
-{\large It depends on |+|, |*|, and |2|}\pause:
+{\large It depends on |+|, |*|, and |3|}\pause:
 
 \begin{itemize}\itemsep1.8ex
 \item |Int|, |Float|, |Double|
@@ -792,7 +792,7 @@ Z3 solution: |(-8,2)|.
   \con{Syntactically awkward in places.}
   \item Good choice for \emph{efficient implementation}.
   \end{itemize}
-\item \emph{Compiling to categories} \out{(library plus compiler plugin):}:
+\item \emph{Compiling to categories}\out{ (library plus compiler plugin):}:
   %% \\Best of both.
   \begin{itemize}
     \pro{Great fit with host language.}
