@@ -1,0 +1,53 @@
+digraph wobbly_disk {
+  margin=0
+  compound=true
+  rankdir=LR
+  node [shape=Mrecord]
+  edge [fontsize=8,fontcolor=indigo]
+  bgcolor=transparent
+  nslimit=20
+  subgraph clusterc0 { label=""; color=white; margin=0; c0 [label="{In|{<Out0>}}"] }
+  subgraph clusterc17 { label=""; color=white; margin=0; c17 [label="{{<In0>}|Out}"] }
+  subgraph cluster_16 {
+    margin=8
+    fontsize=20
+    labeljust=r
+    color=DarkGreen
+    subgraph clusterc9 { label=""; color=white; margin=0; c9 [label="{{<In0>|<In1>}|\×|{<Out0>}}"] }
+    subgraph clusterc11 { label=""; color=white; margin=0; c11 [label="{{<In0>|<In1>}|\×|{<Out0>}}"] }
+    subgraph clusterc6 { label=""; color=white; margin=0; c6 [label="{{<In0>|<In1>}|\×|{<Out0>}}"] }
+    subgraph clusterc10 { label=""; color=white; margin=0; c10 [label="{{<In0>|<In1>}|\×|{<Out0>}}"] }
+    subgraph clusterc12 { label=""; color=white; margin=0; c12 [label="{{<In0>|<In1>}|\×|{<Out0>}}"] }
+    subgraph clusterc7 { label=""; color=white; margin=0; c7 [label="{{<In0>|<In1>}|+|{<Out0>}}"] }
+    subgraph clusterc13 { label=""; color=white; margin=0; c13 [label="{{<In0>|<In1>}|+|{<Out0>}}"] }
+    subgraph clusterc8 { label=""; color=white; margin=0; c8 [label="{{<In0>|<In1>}|\÷|{<Out0>}}"] }
+    subgraph clusterc4 { label=""; color=white; margin=0; c4 [label="{0.25|{<Out0>}}"] }
+    subgraph clusterc3 { label=""; color=white; margin=0; c3 [label="{0.75|{<Out0>}}"] }
+    subgraph clusterc2 { label=""; color=white; margin=0; c2 [label="{1.0|{<Out0>}}"] }
+    subgraph clusterc14 { label=""; color=white; margin=0; c14 [label="{{<In0>|<In1>}|\≤|{<Out0>}}"] }
+    subgraph clusterc1 { label=""; color=white; margin=0; c1 [label="{In|{<Out0>|<Out1>}}"] }
+    subgraph clusterc15 { label=""; color=white; margin=0; c15 [label="{{<In0>}|Out}"] }
+    subgraph clusterc5 { label=""; color=white; margin=0; c5 [label="{{<In0>}|cos|{<Out0>}}"] }
+    c1:Out0 -> c9:In0 [llabel="Double"]
+    c8:Out0 -> c9:In1 [llabel="Double"]
+    c1:Out1 -> c11:In0 [llabel="Double"]
+    c8:Out0 -> c11:In1 [llabel="Double"]
+    c4:Out0 -> c6:In0 [llabel="Double"]
+    c5:Out0 -> c6:In1 [llabel="Double"]
+    c9:Out0 -> c10:In0 [llabel="Double"]
+    c9:Out0 -> c10:In1 [llabel="Double"]
+    c11:Out0 -> c12:In0 [llabel="Double"]
+    c11:Out0 -> c12:In1 [llabel="Double"]
+    c3:Out0 -> c7:In0 [llabel="Double"]
+    c6:Out0 -> c7:In1 [llabel="Double"]
+    c10:Out0 -> c13:In0 [llabel="Double"]
+    c12:Out0 -> c13:In1 [llabel="Double"]
+    c2:Out0 -> c8:In0 [llabel="Double"]
+    c7:Out0 -> c8:In1 [llabel="Double"]
+    c13:Out0 -> c14:In0 [llabel="Double"]
+    c2:Out0 -> c14:In1 [llabel="Double"]
+    c14:Out0 -> c15:In0 [llabel="Bool"]
+    c0:Out0 -> c5:In0 [llabel="Double"]
+  }
+  c15 -> c17:In0 [ltail=cluster_16,llabel="Double × Double → Bool"]
+}

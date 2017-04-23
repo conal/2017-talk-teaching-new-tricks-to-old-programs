@@ -430,7 +430,6 @@ apply                            == uncurry id
 
 > magSqr = addC . (mulC . (exl &&& exl) &&& mulC . (exr &&& exr))
 
-\pause
 \begin{center}\wpicture{4.5in}{magSqr}\end{center}
 }
 
@@ -542,6 +541,39 @@ Convert graphs to Verilog:
 %% \nc\ad[1]{\mathop{\leadsto}_{#1}}
 %% %format DF s a b = a "\ad{"s"}" b
 %% %format DF' s = "\ad{"s"}"
+
+\framet{Example --- graphics}{
+
+{\small \mathindent0.5ex
+\begin{code}
+type Region = R :* R -> Bool
+
+disk :: R -> Region
+disk r p = magSqr p <= sqr r
+
+d t = disk (0.75 + 0.25 * cos t)
+\end{code}
+
+\vspace{-3ex}
+\begin{center}\wpicture{4.7in}{wobbly-disk}\end{center}
+
+\vspace{-3ex}
+\begin{verbatim}
+bool d (float in0, float in1, float in2)  // Generated GLSL
+{ float v17 = 1.0;
+  float v23 = v17 / (0.75 + 0.25 * cos (in0));
+  float v24 = in1 * v23;
+  float v26 = in2 * v23;
+  return v24 * v24 + v26 * v26 <= v17;
+}
+vec4 effect (vec2 p) { return bw(d(time,p.x,p.y)); }
+\end{verbatim}
+}
+
+}
+
+\framet{Haskell to hardware}{
+}
 
 \framet{Automatic differentiation}{
 \mathindent-1ex
