@@ -544,7 +544,7 @@ Convert graphs to Verilog:
 
 \framet{Example --- graphics}{
 
-{\small \mathindent0.5ex
+{\small
 \begin{code}
 type Region = R :* R -> Bool
 
@@ -559,14 +559,14 @@ d t = disk (0.75 + 0.25 * cos t)
 
 \vspace{-3ex}
 \begin{verbatim}
-bool d (float in0, float in1, float in2)  // Generated GLSL
-{ float v17 = 1.0;
-  float v23 = v17 / (0.75 + 0.25 * cos (in0));
-  float v24 = in1 * v23;
-  float v26 = in2 * v23;
-  return v24 * v24 + v26 * v26 <= v17;
-}
-vec4 effect (vec2 p) { return bw(d(time,p.x,p.y)); }
+   bool d (float in0, float in1, float in2)  // Generated GLSL
+   { float v17 = 1.0;
+     float v23 = v17 / (0.75 + 0.25 * cos (in0));
+     float v24 = in1 * v23;
+     float v26 = in2 * v23;
+     return v24 * v24 + v26 * v26 <= v17;
+   }
+   vec4 effect (vec2 p) { return bw(d(time,p.x,p.y)); }
 \end{verbatim}
 }
 
