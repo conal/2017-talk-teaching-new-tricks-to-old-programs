@@ -260,6 +260,7 @@ Systematically \emph{un-inline:}
 \vspace{3ex}
 
 %format :=> = "\dashrightarrow"
+%format := = "\coloneq"
 
 {\setstretch{1.25}
 \begin{code}
@@ -270,7 +271,7 @@ Systematically \emph{un-inline:}
 (\ p -> u v)       :=>  apply . ((\ p -> u) &&& (\ p -> v))
 
 (\ p -> \ q -> u)  :=>  curry (\ (p,q) -> u)
-                   :=>  curry (\ r -> u[fst r / p, snd r / q])
+                   :=>  curry (\ r -> u[p := fst r, q := snd r])
 \end{code}
 }
 
@@ -409,7 +410,18 @@ apply . (curry f . exl &&& exr)  == f
 apply                            == uncurry id
 
 \end{code}
+}
 
+\framet{Misc operations}{
+
+\begin{code}
+class NumCat (~>) a where
+  negateC          :: a ~> a
+  addC, sub, mulC  :: (a :* a) ~> a
+  ...
+
+...
+\end{code}
 }
 
 \framet{Changing interpretations}{
@@ -457,16 +469,20 @@ apply                            == uncurry id
 }
 
 \framet{Computation graphs --- implementation sketch}{
-
+%\small
+\vspace{-0.5ex}
 \begin{code}
-data Graph a b = Graph (Ports a -> GraphM (Ports b))
+newtype Graph a b = Graph (Ports a -> GraphM (Ports b))
 
-type GraphM = State (Port,[Comp])
+type GraphM = State (PortNum,[Comp])
 
-data Comp = forall a b. Comp String (Ports a) (Ports b)
+data Template :: * -> * -> * NOP where
+  Prim      :: String -> Template a b
+  Subgraph  :: Graph a b -> Template () (a -> b)
+
+data Comp = forall a b. Comp (Template a b) (Ports a) (Ports b)
 
 instance Category Graph where
-  type Ok Graph a = GenPorts a
   id = Graph return
   Graph g . Graph f = Graph (g <=< f)
 
@@ -482,6 +498,7 @@ instance BoolCat Graph where
 
 > sum :: Tree N4 Int -> Int
 
+\vspace{-4ex}
 \begin{center}\wpicture{4.5in}{sum-t4}\end{center}
 
 }
@@ -490,7 +507,7 @@ instance BoolCat Graph where
 
 > lsums :: Tree N4 Int -> Tree N4 Int :* Int
 
-\vspace{-6ex}
+\vspace{-7ex}
 
 \begin{center}\wpicture{4.25in}{lsums-rb4}\end{center}
 
@@ -542,44 +559,53 @@ Convert graphs to Verilog:
 %% %format DF s a b = a "\ad{"s"}" b
 %% %format DF' s = "\ad{"s"}"
 
-\framet{Example --- graphics}{
+\framet{Example --- graphics}{\mathindent2ex
+\small
+\vspace{0.75ex}
 
-{\small
+\begin{textblock}{150}[1,0](350,45)
+\begin{tcolorbox} \mathindent0ex
+\vspace{-1ex}
 \begin{code}
 type Region = R :* R -> Bool
+\end{code}
+\vspace{-3ex}
+\end{tcolorbox}
+\end{textblock}
 
+\begin{code}
 disk :: R -> Region
 disk r p = magSqr p <= sqr r
 
-d t = disk (0.75 + 0.25 * cos t)
+woob t = disk (0.75 + 0.25 * cos t)
 \end{code}
 
-\vspace{-3ex}
-\begin{center}\wpicture{4.7in}{wobbly-disk}\end{center}
+\pause
+\vspace{-3.5ex}
+\begin{center}\wpicture{4.1in}{wobbly-disk}\end{center}
 
-\vspace{-3ex}
+\pause
+\vspace{-4.5ex}
 \begin{verbatim}
-   bool d (float in0, float in1, float in2)  // Generated GLSL
-   { float v17 = 1.0;
-     float v23 = v17 / (0.75 + 0.25 * cos (in0));
-     float v24 = in1 * v23;
-     float v26 = in2 * v23;
-     return v24 * v24 + v26 * v26 <= v17;
-   }
-   vec4 effect (vec2 p) { return bw(d(time,p.x,p.y)); }
+ bool woob (float in0, float in1, float in2)  // Generated GLSL
+ { float v17 = 1.0;
+   float v23 = v17 / (0.75 + 0.25 * cos (in0));
+   float v24 = in1 * v23;
+   float v26 = in2 * v23;
+   return v24 * v24 + v26 * v26 <= v17;
+ }
+ vec4 effect (vec2 p) { return bw(woob(time,p.x,p.y)); }
 \end{verbatim}
-}
-
-}
-
-\framet{Haskell to hardware}{
 }
 
 \framet{Automatic differentiation}{
 \mathindent-1ex
 \begin{code}
 data D a b = D (a -> b :* (LM a b)) -- Derivatives are linear maps.
-
+\end{code}
+\pause
+\vspace{-4ex}
+\begin{code}
 linearD f = D (\ a -> (f a, linear f))
 
 instance Num s => Category D where
@@ -658,7 +684,10 @@ instance Num s => NumCat D s where
 
 \begin{code}
 data IF a b = IF (Iv a -> Iv b)
-
+\end{code}
+\pause
+\vspace{-4ex}
+\begin{code}
 type family Iv a
 type instance Iv Double      = Double :* Double
 type instance Iv (a  :*  b)  = Iv a  :*  Iv b
@@ -686,6 +715,10 @@ instance Cartesian IF where
 \begin{code}
 ...
 NOP
+\end{code}
+\pause
+\vspace{-4ex}
+\begin{code}
 instance (Iv a ~ (a :* a), Num a, Ord a) => NumCat IF a where
   addC = IF (\ ((al,ah),(bl,bh)) -> (al+bl,ah+bh))
   mulC = IF (\ ((al,ah),(bl,bh)) ->
@@ -787,7 +820,7 @@ pred (x,y) =
 
 \vspace{4ex}
 
-Z3 solution: |(-8,2)|.
+Solution: |(-8,2)|.
 
 }
 
