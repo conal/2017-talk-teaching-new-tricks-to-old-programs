@@ -25,6 +25,7 @@
 % \large
 
 \frame{\titlepage}
+\institute{Target}
 
 \framet{What does it mean?}{ \LARGE
 
@@ -132,7 +133,7 @@ Example,
 \item
   The most basic ``operations'':  |\ |, variables, and application.
 \pitem
-  We can't overload.
+  We can't re-interpret/overload.
 \pitem
   Or can we?
 \end{itemize}
@@ -334,13 +335,18 @@ cosSinProd = (cosC &&& sinC) . mulC
 }
 }
 
+% \nc\bq{\texttt{`}}
+\nc\bq{\mbox{\`{}}}
+
+%format `k` = "\mathbin{\bq\! k\;\!\!\bq}\!"
+
 \framet{Abstract algebra for functions}{
 
 Interface:
 
-> class Category (~>) where
->   id   :: a ~> a
->   (.)  :: (b ~> c) -> (a ~> b) -> (a ~> c)
+> class Category k where
+>   id   :: a `k` a
+>   (.)  :: (b `k` c) -> (a `k` b) -> (a `k` c)
 >   infixr 9 .
 
 Laws:
@@ -353,13 +359,19 @@ Laws:
 
 \setlength{\fboxsep}{-1ex}
 
+\nc\scrk[1]{_{\hspace{#1}\scriptscriptstyle{k\!}}}
+
+%format Prod (k) a b = a "\times\scrk{-0.25ex}" b
+%format Coprod (k) a b = a "+\scrk{-0.3ex}" b
+%format Exp (k) a b = a "\Rightarrow\scrk{-0.2ex}" b
+
 \framet{Products}{
 
-> class Category (~>) => ProductCat (~>) where
->   type Prod (~>) a b
->   exl    ::  (Prod (~>) a b) ~> a
->   exr    ::  (Prod (~>) a b) ~> b
->   (&&&)  ::  (a ~> c)  -> (a ~> d)  -> (a ~> (Prod (~>) c d))
+> class Category k => ProductCat k where
+>   type Prod k a b
+>   exl    ::  (Prod k a b) `k` a
+>   exr    ::  (Prod k a b) `k` b
+>   (&&&)  ::  (a `k` c)  -> (a `k` d)  -> (a `k` (Prod k c d))
 >   infixr 3 &&&
 
 Laws:
@@ -370,16 +382,16 @@ Laws:
 
 }
 
-\out{
+{
 \framet{Coproducts}{
 
 Dual to product.
 
-> class Category (~>) => CoproductCat (~>) where
->   type Coprod (~>) a b
->   inl    ::  a ~> (Coprod (~>) a b)
->   inr    ::  b ~> (Coprod (~>) a b)
->   (|||)  ::  (a ~> c)  -> (b ~> c)  -> ((Coprod (~>) a b) ~> c)
+> class Category k => CoproductCat k where
+>   type Coprod k a b
+>   inl    ::  a `k` (Coprod k a b)
+>   inr    ::  b `k` (Coprod k a b)
+>   (|||)  ::  (a `k` c)  -> (b `k` c)  -> ((Coprod k a b) `k` c)
 >   infixr 2 |||
 
 Laws:
@@ -392,13 +404,13 @@ Laws:
 }
 
 \framet{Exponentials}{
-
+First-class ``functions'' (morphisms):
 \begin{code}
-class ProductCat (~>) => ClosedCat (~>) where
-  type Exp (~>) a b
-  apply    :: (Prod (~>) (Exp (~>) a b) a) ~> b
-  curry    :: ((Prod (~>) a b) ~> c) -> (a ~> (Exp (~>) b c))
-  uncurry  :: (a ~> (Exp (~>) b c)) -> ((Prod (~>) a b) ~> c)
+class ProductCat k => ClosedCat k where
+  type Exp k a b
+  apply    :: (Prod k (Exp k a b) a) `k` b
+  curry    :: ((Prod k a b) `k` c) -> (a `k` (Exp k b c))
+  uncurry  :: (a `k` (Exp k b c)) -> ((Prod k a b) `k` c)
 \end{code}
 Laws:
 
@@ -415,9 +427,9 @@ apply                            == uncurry id
 \framet{Misc operations}{
 
 \begin{code}
-class NumCat (~>) a where
-  negateC          :: a ~> a
-  addC, sub, mulC  :: (a :* a) ~> a
+class NumCat k a where
+  negateC          :: a `k` a
+  addC, sub, mulC  :: (a :* a) `k` a
   ...
 
 ...
@@ -866,6 +878,15 @@ Solution: |(-8,2)|.
     \pro{Analysis, optimization, non-standard target architectures.}
   \end{itemize}
 \end{itemize}
+}
+
+\framet{For more details}{
+\begin{itemize}\itemsep5ex
+\item The paper \href{http://conal.net/papers/compiling-to-categories/}{\emph{Compiling to categories}} (February 2017)
+
+\item GitHub \href{https://github.com/conal/concat}{project page}
+\end{itemize}
+
 }
 
 \end{document}
