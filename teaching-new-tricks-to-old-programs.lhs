@@ -837,7 +837,7 @@ Solution: |(-8,2)|.
 }
 
 \framet{Other examples}{
-\begin{itemize}\itemsep2ex
+\begin{itemize}\itemsep3ex
 \item Linear maps
 \item Incremental evaluation
 \item Polynomials
@@ -853,16 +853,16 @@ Solution: |(-8,2)|.
 
 \framet{Domain-specific embedded languages (DSELs)}{
 
-\begin{itemize}\itemsep2ex
+\begin{itemize}\itemsep0.375ex\parskip0.375ex
 \item \emph{Shallow} (just a library):
-  \begin{itemize}
+  \begin{itemize}\itemsep0.375ex
   \pro{Great fit with host language.}
   \pro{Easy to implement and use.}
   \con{Hard to optimize.}
   \item Good choice for \emph{expressing ideas}.
   \end{itemize}
 \item \emph{Deep} (syntactic representation):
-  \begin{itemize}
+  \begin{itemize}\itemsep0.375ex
   \pro{More room for analysis and optimization.}
   \con{Harder to implement; redundant with host compiler.}
   \con{Less semantic guidance.}
@@ -871,7 +871,7 @@ Solution: |(-8,2)|.
   \end{itemize}
 \item \emph{Compiling to categories}\out{ (library plus compiler plugin):}:
   %% \\Best of both.
-  \begin{itemize}
+  \begin{itemize}\itemsep0.375ex
     \pro{Great fit with host language.}
     \pro{Semantic guidance.}
     \pro{Easy to implement.}
