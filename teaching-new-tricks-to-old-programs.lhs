@@ -488,11 +488,11 @@ newtype Graph a b = Graph (Ports a -> GraphM (Ports b))
 
 type GraphM = State (PortNum,[Comp])
 
+data Comp = forall a b. Comp (Template a b) (Ports a) (Ports b)
+
 data Template :: * -> * -> * NOP where
   Prim      :: String -> Template a b
   Subgraph  :: Graph a b -> Template () (a -> b)
-
-data Comp = forall a b. Comp (Template a b) (Ports a) (Ports b)
 
 instance Category Graph where
   id = Graph return
@@ -594,19 +594,18 @@ woob t = disk (0.75 + 0.25 * cos t)
 
 \pause
 \vspace{-3.5ex}
-\begin{center}\wpicture{4.1in}{wobbly-disk}\end{center}
-
+\begin{center}\wpicture{4.1in}{wobbly-disk}\end{center} 
 \pause
 \vspace{-4.5ex}
 \begin{verbatim}
- bool woob (float in0, float in1, float in2)  // Generated GLSL
+ bool uwoob (float in0, float in1, float in2)  // Generated GLSL
  { float v17 = 1.0;
    float v23 = v17 / (0.75 + 0.25 * cos (in0));
    float v24 = in1 * v23;
    float v26 = in2 * v23;
    return v24 * v24 + v26 * v26 <= v17;
  }
- vec4 effect (vec2 p) { return bw(woob(time,p.x,p.y)); }
+ vec4 effect (vec2 p) { return bw(uwoob(time,p.x,p.y)); }
 \end{verbatim}
 }
 
@@ -869,7 +868,7 @@ Solution: |(-8,2)|.
   \con{Syntactically awkward in places.}
   \item Good choice for \emph{efficient implementation}.
   \end{itemize}
-\item \emph{Compiling to categories}\out{ (library plus compiler plugin):}:
+\pitem \emph{Compiling to categories}\out{ (library plus compiler plugin):}:
   %% \\Best of both.
   \begin{itemize}\itemsep0.375ex
     \pro{Great fit with host language.}
