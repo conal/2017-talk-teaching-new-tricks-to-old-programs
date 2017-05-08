@@ -27,6 +27,24 @@
 \frame{\titlepage}
 \institute{Target}
 
+\framet{Domain-specific embedded languages}{
+
+\emph{New vocabularies, not new languages}.
+
+\vspace{6ex}
+
+\begin{textblock}{180}[1,0](400,40)
+\wpicture{1.5in}{peter-landin}
+\end{textblock}
+
+\wpicture{4.5in}{next-700-title}
+
+\vspace{3ex}
+\pause
+Can we create fewer new vocabularies as well?
+
+}
+
 \framet{What does it mean?}{ \LARGE
 
 \vspace{6ex}
@@ -136,7 +154,8 @@ Example,
 \item
   We can't re-interpret/overload.
 \pitem
-  Or can we?
+  %% Or can we?
+  What if there were a way?
 \end{itemize}
 
 }
@@ -238,7 +257,7 @@ f &&& g = \ a -> (f a, g a)
 curry :: (a :* b -> c) -> (a -> b -> c)
 curry f = \ a -> \ b -> f (a,b)
 
-apply :: ((a -> b) :* a) -> b
+apply :: (a -> b) :* a -> b
 apply  = \ (f,a) -> f a
        = uncurry id
 
