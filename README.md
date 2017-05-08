@@ -2,7 +2,7 @@
 
 A talk for [Lambda Jam](http://lambdajam.yowconference.com.au/) 2017 in Sydney, Australia.
 
-*   [Slides (PDF)](http://conal.net/talks/new-tricks-old-programs.pdf)
+*   [Slides (PDF)](http://conal.net/talks/teaching-new-tricks-to-old-programs.pdf)
 *   Video link will appear here.
 
 
