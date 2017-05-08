@@ -30,6 +30,7 @@
 \framet{What does it mean?}{ \LARGE
 
 \vspace{6ex}
+\pause
 
 \begin{center}
 
@@ -80,11 +81,11 @@ It depends on |+|, |*|, and |3|.
 
 \begin{itemize}\itemsep1.8ex
 \item |Int|, |Float|, |Double|
-\item |N|, |Z|, |Q|, |R|, |C|
+\item |Z|, |N|, |Q|, |R|, |C|
 \pitem Vectors
 \item Polynomials
 \item Functions
-\item Regular expressions
+\item Regular expressions/languages
 \item Arbitrary rings, semirings, \dots.
 \end{itemize}
 
@@ -130,9 +131,9 @@ Example,
 %% \vspace{1ex}
 
 \begin{itemize}\itemsep4ex
-\item
-  The most basic ``operations'':  |\ |, variables, and application.
 \pitem
+  The most basic ``operations'':  |\ |, variables, and application.
+\item
   We can't re-interpret/overload.
 \pitem
   Or can we?
@@ -141,7 +142,7 @@ Example,
 }
 
 
-\framet{Why overload lambda?}{ \large
+\framet{Why overload lambda (etc)?}{ \large
 
 Same benefits as algebraic abstraction:
 
@@ -158,22 +159,24 @@ Same benefits as algebraic abstraction:
 
 \framet{Why overload lambda?}{
 
-\vspace{2ex}
+\vspace{1ex}
 
-\begin{itemize}\itemsep1ex\parskip2ex
+\begin{itemize}\itemsep1ex\parskip1.2ex
 \item
  Convenient notation for functions.
 \pitem
  Alternative function implementations:
- \begin{itemize}\itemsep1.5ex
+ \begin{itemize}\itemsep1ex
  \item
    GPU code
  \item
    Circuits
+ \item
+   Javascript
  \end{itemize}
 \pitem
  Enhanced functions:
- \begin{itemize}\itemsep1.5ex
+ \begin{itemize}\itemsep1ex
  \item
    Derivatives and integrals
  \item
@@ -183,7 +186,9 @@ Same benefits as algebraic abstraction:
  \item
    Optimization
  \item
-   Root-finding; constraint solving
+   Root-finding
+ \item
+   Constraint solving
  \end{itemize}
 \end{itemize}
 
@@ -367,6 +372,8 @@ Laws:
 
 \framet{Products}{
 
+Interface:
+
 > class Category k => ProductCat k where
 >   type Prod k a b
 >   exl    ::  (Prod k a b) `k` a
@@ -376,9 +383,9 @@ Laws:
 
 Laws:
 
-> exl . (f &&& g)      == f                
-> exr . (f &&& g)      == g                
-> exl . h &&& exr . h  == h                
+> exl  .  (f &&& g)      == f                
+> exr  .  (f &&& g)      == g                
+> exl  .  h &&& exr . h  == h                
 
 }
 
@@ -429,7 +436,7 @@ apply                            == uncurry id
 \begin{code}
 class NumCat k a where
   negateC          :: a `k` a
-  addC, sub, mulC  :: (a :* a) `k` a
+  addC, sub, mulC  :: (Prod k a a) `k` a
   ...
 
 ...
@@ -442,7 +449,7 @@ class NumCat k a where
   We've eliminated lambdas and variables
 \item
   and replaced them with an algebraic vocabulary.
-\pitem
+\item
   What happens if we \emph{replace |(->)| with other instances?}\\
   (Via compiler plugin.)
 \end{itemize}
@@ -619,19 +626,19 @@ data D a b = D (a -> b :* (LM a b)) -- Derivatives are linear maps.
 \begin{code}
 linearD f = D (\ a -> (f a, linear f))
 
-instance Num s => Category D where
+instance Category D where
   id = linearD id
   D g . D f = D (\ a -> let { (b,f') = f a ; (c,g') = g b } in (c, g' . f'))
 
-instance Num s => Cartesian D where
+instance Cartesian D where
   exl  = linearD exl
   exr  = linearD exr
   D f &&& D g = D (\ a -> let { (b,f') = f a ; (c,g') = g a } in ((b,c), f' &&& g'))
 
-instance Num s => NumCat D s where
-  negateC  = linearD negateC
-  addC     = linearD addC
-  mulC     = D (mulC &&& \ (a,b) -> linear (\ (da,db) -> da * b + db * a))
+instance NumCat D where
+  negateC = linearD negateC
+  addC  = linearD addC
+  mulC  = D (mulC &&& \ (a,b) -> linear (\ (da,db) -> da * b + db * a))
 
 \end{code}
 }
@@ -880,7 +887,7 @@ Solution: |(-8,2)|.
 }
 
 \framet{For more details}{
-\begin{itemize}\itemsep5ex
+\begin{itemize}\itemsep8ex
 \item The paper \href{http://conal.net/papers/compiling-to-categories/}{\emph{Compiling to categories}} (February 2017)
 
 \item GitHub \href{https://github.com/conal/concat}{project page}
