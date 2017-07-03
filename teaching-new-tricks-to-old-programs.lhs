@@ -372,6 +372,8 @@ Interface:
 >   id   :: a `k` a
 >   (.)  :: (b `k` c) -> (a `k` b) -> (a `k` c)
 >   infixr 9 .
+>   NOP
+>   NOP
 
 Laws:
 
@@ -437,6 +439,7 @@ class ProductCat k => ClosedCat k where
   apply    :: (Prod k (Exp k a b) a) `k` b
   curry    :: ((Prod k a b) `k` c) -> (a `k` (Exp k b c))
   uncurry  :: (a `k` (Exp k b c)) -> ((Prod k a b) `k` c)
+  NOP
 \end{code}
 Laws:
 
@@ -445,7 +448,6 @@ Laws:
 uncurry (curry f)                == f
 curry (uncurry g)                == g
 apply . (curry f . exl &&& exr)  == f
-apply                            == uncurry id
 
 \end{code}
 }
