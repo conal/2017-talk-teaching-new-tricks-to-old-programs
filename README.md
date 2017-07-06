@@ -3,7 +3,7 @@
 A talk for [Lambda Jam](http://lambdajam.yowconference.com.au/) 2017 in Sydney, Australia.
 
 *   [Slides (PDF)](http://conal.net/talks/teaching-new-tricks-to-old-programs.pdf)
-*   [Video](https://www.youtube.com/watch?v=vzLK_xE9Zy8&t=1793s)
+*   [Video](https://www.youtube.com/watch?v=vzLK_xE9Zy8)
 *   [Paper: "Compiling to Categories"](http://conal.net/papers/compiling-to-categories)
 
 ## Abstract
